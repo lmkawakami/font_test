@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Font Tester</title>
+        <style>
+            /* ── Layout base ── */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: system-ui, sans-serif;
+                background: #0f0f13;
+                color: #e8e8f0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2.5rem 1rem 4rem;
+                gap: 2rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                color: #c8b8ff;
+            }
+
+            /* ── Controls bar ── */
+            .controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                align-items: center;
+                background: #1a1a24;
+                border: 1px solid #2e2e42;
+                border-radius: 12px;
+                padding: 1rem 1.25rem;
+                width: 100%;
+                max-width: 860px;
+            }
+
+            .controls label {
+                font-size: 0.78rem;
+                color: #888;
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+                flex: 1 1 200px;
+            }
+
+            .controls label.size-label {
+                flex: 0 1 130px;
+            }
+
+            select,
+            input[type="range"] {
+                background: #0f0f13;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #e8e8f0;
+                padding: 0.45rem 0.6rem;
+                font-size: 0.9rem;
+                width: 100%;
+                cursor: pointer;
+                transition: border-color 0.2s;
+            }
+            select:focus,
+            input[type="range"]:focus {
+                outline: none;
+                border-color: #7c5cfc;
+            }
+
+            input[type="range"] {
+                padding: 0.35rem 0.4rem;
+                accent-color: #7c5cfc;
+            }
+
+            .size-display {
+                font-size: 0.82rem;
+                color: #c8b8ff;
+                min-width: 3.2em;
+                text-align: right;
+            }
+
+            .size-row {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            /* ── Preview area ── */
+            .preview-wrap {
+                width: 100%;
+                max-width: 860px;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .preview-wrap .section-title {
+                font-size: 0.78rem;
+                color: #666;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            #preview-text {
+                background: #1a1a24;
+                border: 1px solid #2e2e42;
+                border-radius: 12px;
+                padding: 1.5rem 1.75rem;
+                min-height: 180px;
+                width: 100%;
+                resize: vertical;
+                font-size: 48px;
+                color: #f0f0ff;
+                line-height: 1.45;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+            #preview-text:focus {
+                border-color: #7c5cfc;
+            }
+
+            /* ── Font info badge ── */
+            .font-badge {
+                display: inline-block;
+                background: #7c5cfc22;
+                border: 1px solid #7c5cfc55;
+                border-radius: 20px;
+                padding: 0.25rem 0.85rem;
+                font-size: 0.78rem;
+                color: #b09cff;
+                align-self: flex-start;
+            }
+
+            /* ── Alphabet specimen ── */
+            .specimen-wrap {
+                width: 100%;
+                max-width: 860px;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .specimen-wrap .section-title {
+                font-size: 0.78rem;
+                color: #666;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            .specimen-rows {
+                background: #1a1a24;
+                border: 1px solid #2e2e42;
+                border-radius: 12px;
+                padding: 1.25rem 1.75rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .specimen-row {
+                color: #ccc;
+                line-height: 1.5;
+                word-break: break-all;
+            }
+
+            .specimen-row.sz-sm {
+                font-size: 14px;
+            }
+            .specimen-row.sz-md {
+                font-size: 24px;
+            }
+            .specimen-row.sz-lg {
+                font-size: 40px;
+            }
+            .specimen-row.sz-xl {
+                font-size: 64px;
+            }
+
+            /* ── No fonts notice ── */
+            #no-fonts-notice {
+                display: none;
+                background: #2a1a1a;
+                border: 1px solid #5a2a2a;
+                border-radius: 10px;
+                padding: 0.9rem 1.2rem;
+                font-size: 0.88rem;
+                color: #f08080;
+                max-width: 860px;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🔤 Font Tester</h1>
+
+        <div id="no-fonts-notice">
+            Nenhuma fonte foi encontrada. Adicione arquivos
+            <code>.woff2</code> à pasta <code>fonts/woff2/</code> e recarregue a
+            página.
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <label>
+                Fonte
+                <select id="font-select"></select>
+            </label>
+
+            <label class="size-label">
+                Tamanho
+                <div class="size-row">
+                    <input
+                        type="range"
+                        id="font-size"
+                        min="8"
+                        max="200"
+                        value="48"
+                        step="1"
+                    />
+                    <span class="size-display" id="size-display">48px</span>
+                </div>
+            </label>
+        </div>
+
+        <!-- Free-text preview -->
+        <div class="preview-wrap">
+            <span class="section-title">Texto livre</span>
+            <textarea id="preview-text" spellcheck="false">
+O rato roeu a roupa do rei de Roma.</textarea>
+            <span class="font-badge" id="font-badge"></span>
+        </div>
+
+        <!-- Alphabet specimen -->
+        <div class="specimen-wrap">
+            <span class="section-title">Espécime tipográfico</span>
+            <div class="specimen-rows">
+                <div class="specimen-row sz-sm" id="spec-sm"></div>
+                <div class="specimen-row sz-md" id="spec-md"></div>
+                <div class="specimen-row sz-lg" id="spec-lg"></div>
+                <div class="specimen-row sz-xl" id="spec-xl"></div>
+            </div>
+        </div>
+
+        <script>
+            // ─────────────────────────────────────────────────────────────
+            // FONT REGISTRY
+            // Add each .woff2 file here as: { name, file }
+            // The page will @font-face-load them automatically.
+            // ─────────────────────────────────────────────────────────────
+            const FONTS = [
+                {
+                    name: "Mikiyu Mokomori Kuro",
+                    file: "mikiyu-mokomori-kuro.woff2",
+                },
+            ];
+
+            const FONTS_DIR = "fonts/woff2/";
+
+            const SPECIMEN_TEXT = {
+                md: "The quick brown fox jumps over the lazy dog",
+                sm: "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz",
+                lg: "Pack my box with five dozen liquor jugs",
+                xl: "0123456789",
+            };
+
+            // ── DOM refs ──────────────────────────────────────────────────
+            const fontSelect = document.getElementById("font-select");
+            const fontSizeInput = document.getElementById("font-size");
+            const sizeDisplay = document.getElementById("size-display");
+            const previewText = document.getElementById("preview-text");
+            const fontBadge = document.getElementById("font-badge");
+            const noFontsNote = document.getElementById("no-fonts-notice");
+
+            const specSm = document.getElementById("spec-sm");
+            const specMd = document.getElementById("spec-md");
+            const specLg = document.getElementById("spec-lg");
+            const specXl = document.getElementById("spec-xl");
+
+            // ── Load fonts and populate select ───────────────────────────
+            function loadFonts() {
+                if (!FONTS.length) {
+                    noFontsNote.style.display = "block";
+                    return;
+                }
+
+                const style = document.createElement("style");
+                let css = "";
+
+                FONTS.forEach(({ name, file }) => {
+                    css += `
+          @font-face {
+            font-family: "${name}";
+            src: url("${FONTS_DIR}${file}") format("woff2");
+            font-display: swap;
+          }`;
+
+                    const opt = document.createElement("option");
+                    opt.value = name;
+                    opt.textContent = name;
+                    fontSelect.appendChild(opt);
+                });
+
+                style.textContent = css;
+                document.head.appendChild(style);
+            }
+
+            // ── Apply selected font everywhere ───────────────────────────
+            function applyFont(name) {
+                const ff = `"${name}", serif`;
+                previewText.style.fontFamily = ff;
+                [specSm, specMd, specLg, specXl].forEach(
+                    (el) => (el.style.fontFamily = ff),
+                );
+                fontBadge.textContent = name;
+            }
+
+            // ── Apply font size to preview only ──────────────────────────
+            function applySize(px) {
+                previewText.style.fontSize = px + "px";
+                sizeDisplay.textContent = px + "px";
+            }
+
+            // ── Populate specimen rows ────────────────────────────────────
+            function populateSpecimen() {
+                specSm.textContent = SPECIMEN_TEXT.sm;
+                specMd.textContent = SPECIMEN_TEXT.md;
+                specLg.textContent = SPECIMEN_TEXT.lg;
+                specXl.textContent = SPECIMEN_TEXT.xl;
+            }
+
+            // ── Event listeners ──────────────────────────────────────────
+            fontSelect.addEventListener("change", () =>
+                applyFont(fontSelect.value),
+            );
+
+            fontSizeInput.addEventListener("input", () =>
+                applySize(Number(fontSizeInput.value)),
+            );
+
+            // ── Init ─────────────────────────────────────────────────────
+            loadFonts();
+            populateSpecimen();
+
+            if (FONTS.length) {
+                applyFont(FONTS[0].name);
+                applySize(Number(fontSizeInput.value));
+            }
+        </script>
+    </body>
+</html>
