@@ -5,227 +5,235 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Font Tester</title>
         <style>
-            /* ── Layout base ── */
-            *,
-            *::before,
-            *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
             body {
-                font-family: system-ui, sans-serif;
-                background: #0f0f13;
-                color: #e8e8f0;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 2.5rem 1rem 4rem;
-                gap: 2rem;
+              font-family: system-ui, sans-serif;
+              background: #0f0f13;
+              color: #e8e8f0;
+              min-height: 100vh;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              padding: 2.5rem 1rem 4rem;
+              gap: 1.75rem;
             }
 
             h1 {
-                font-size: 1.4rem;
-                font-weight: 600;
-                letter-spacing: 0.05em;
-                color: #c8b8ff;
+              font-size: 1.4rem;
+              font-weight: 600;
+              letter-spacing: .05em;
+              color: #c8b8ff;
             }
 
-            /* ── Controls bar ── */
-            .controls {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                align-items: center;
-                background: #1a1a24;
-                border: 1px solid #2e2e42;
-                border-radius: 12px;
-                padding: 1rem 1.25rem;
-                width: 100%;
-                max-width: 860px;
+            .section-title {
+              font-size: .78rem;
+            </head>  color: #666;
+              letter-spacing: .06em;
+              text-transform: uppercase;
             }
 
-            .controls label {
-                font-size: 0.78rem;
-                color: #888;
-                display: flex;
-                flex-direction: column;
-                gap: 0.3rem;
-                flex: 1 1 200px;
+            /* ── Text input section ── */
+            .input-section {
+              width: 100%;
+              max-width: 860px;
+              display: flex;
+              flex-direction: column;
+              gap: .6rem;
             }
 
-            .controls label.size-label {
-                flex: 0 1 130px;
-            }
-
-            select,
-            input[type="range"] {
-                background: #0f0f13;
-                border: 1px solid #3a3a52;
-                border-radius: 6px;
-                color: #e8e8f0;
-                padding: 0.45rem 0.6rem;
-                font-size: 0.9rem;
-                width: 100%;
-                cursor: pointer;
-                transition: border-color 0.2s;
-            }
-            select:focus,
-            input[type="range"]:focus {
-                outline: none;
-                border-color: #7c5cfc;
-            }
-
-            input[type="range"] {
-                padding: 0.35rem 0.4rem;
-                accent-color: #7c5cfc;
-            }
-
-            .size-display {
-                font-size: 0.82rem;
-                color: #c8b8ff;
-                min-width: 3.2em;
-                text-align: right;
-            }
-
-            .size-row {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            /* ── Preview area ── */
-            .preview-wrap {
-                width: 100%;
-                max-width: 860px;
-                display: flex;
-                flex-direction: column;
-                gap: 0.6rem;
-            }
-
-            .preview-wrap .section-title {
-                font-size: 0.78rem;
-                color: #666;
-                letter-spacing: 0.06em;
-                text-transform: uppercase;
-            }
-
-            #preview-text {
-                background: #1a1a24;
-                border: 1px solid #2e2e42;
-                border-radius: 12px;
-                padding: 1.5rem 1.75rem;
-                min-height: 180px;
-                width: 100%;
-                resize: vertical;
-                font-size: 48px;
-                color: #f0f0ff;
-                line-height: 1.45;
-                outline: none;
-                transition: border-color 0.2s;
-            }
-            #preview-text:focus {
-                border-color: #7c5cfc;
-            }
-
-            /* ── Font info badge ── */
-            .font-badge {
-                display: inline-block;
-                background: #7c5cfc22;
-                border: 1px solid #7c5cfc55;
-                border-radius: 20px;
-                padding: 0.25rem 0.85rem;
-                font-size: 0.78rem;
-                color: #b09cff;
-                align-self: flex-start;
-            }
-
-            /* ── Alphabet specimen ── */
-            .specimen-wrap {
-                width: 100%;
-                max-width: 860px;
-                display: flex;
-                flex-direction: column;
-                gap: 0.6rem;
-            }
-
-            .specimen-wrap .section-title {
-                font-size: 0.78rem;
-                color: #666;
-                letter-spacing: 0.06em;
-                text-transform: uppercase;
-            }
-
-            .specimen-rows {
-                background: #1a1a24;
-                border: 1px solid #2e2e42;
-                border-radius: 12px;
-                padding: 1.25rem 1.75rem;
-                display: flex;
-                flex-direction: column;
-                gap: 0.6rem;
-            }
-
-            .specimen-row {
-                color: #ccc;
-                line-height: 1.5;
-                word-break: break-all;
-            }
-
-            .specimen-row.sz-sm {
-                font-size: 14px;
-            }
-            .specimen-row.sz-md {
-                font-size: 24px;
-            }
-            .specimen-row.sz-lg {
-                font-size: 40px;
-            }
-            .specimen-row.sz-xl {
-                font-size: 64px;
-            }
-
-            /* ── Preset buttons ── */
             .preset-btns {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.4rem;
+              display: flex;
+              flex-wrap: wrap;
+              gap: .4rem;
             }
 
             .preset-btn {
-                background: #1a1a24;
-                border: 1px solid #3a3a52;
-                border-radius: 6px;
-                color: #c8b8ff;
-                padding: 0.3rem 0.75rem;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition:
-                    background 0.15s,
-                    border-color 0.15s;
-                font-family: system-ui, sans-serif;
+              background: #1a1a24;
+              border: 1px solid #3a3a52;
+              border-radius: 6px;
+              color: #c8b8ff;
+              padding: .3rem .75rem;
+              font-size: .9rem;
+              cursor: pointer;
+              font-family: system-ui, sans-serif;
+              transition: background .15s, border-color .15s;
             }
-            .preset-btn:hover {
-                background: #25253a;
-                border-color: #7c5cfc;
+            .preset-btn:hover  { background: #25253a; border-color: #7c5cfc; }
+            .preset-btn:active { background: #7c5cfc33; }
+
+            #input-text {
+              background: #1a1a24;
+              border: 1px solid #2e2e42;
+              border-radius: 12px;
+              padding: 1rem 1.25rem;
+              height: 100px;
+              width: 100%;
+              resize: vertical;
+              font-family: 'Courier New', Courier, monospace;
+              font-size: 1rem;
+              color: #f0f0ff;
+              line-height: 1.5;
+              outline: none;
+              transition: border-color .2s;
             }
-            .preset-btn:active {
-                background: #7c5cfc33;
+            #input-text:focus { border-color: #7c5cfc; }
+
+            /* ── Add font bar ── */
+            .add-bar {
+              width: 100%;
+              max-width: 860px;
+              display: flex;
+              flex-direction: column;
+              gap: .6rem;
+            }
+
+            .add-row {
+              display: flex;
+              gap: .6rem;
+              align-items: center;
+            }
+
+            select {
+              flex: 1;
+              background: #1a1a24;
+              border: 1px solid #3a3a52;
+              border-radius: 6px;
+              color: #e8e8f0;
+              padding: .45rem .6rem;
+              font-size: .9rem;
+              cursor: pointer;
+              outline: none;
+              transition: border-color .2s;
+            }
+            select:focus { border-color: #7c5cfc; }
+
+            #add-font-btn {
+              background: #7c5cfc;
+              border: none;
+              border-radius: 6px;
+              color: #fff;
+              padding: .45rem 1.1rem;
+              font-size: .9rem;
+              font-weight: 500;
+              cursor: pointer;
+              white-space: nowrap;
+              transition: background .15s;
+            }
+            #add-font-btn:hover    { background: #9070ff; }
+            #add-font-btn:active   { background: #6040e0; }
+            #add-font-btn:disabled { background: #3a3a52; cursor: default; }
+
+            /* ── Font blocks grid ── */
+            #font-blocks {
+              width: 100%;
+              max-width: 860px;
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+              gap: 1rem;
+            }
+
+            .empty-state {
+              grid-column: 1 / -1;
+              text-align: center;
+              color: #444;
+              font-size: .9rem;
+              padding: 2.5rem 1rem;
+              border: 1px dashed #2a2a3a;
+              border-radius: 12px;
+            }
+            .empty-state strong { color: #666; }
+
+            /* ── Individual font block ── */
+            .font-block {
+              background: #1a1a24;
+              border: 1px solid #2e2e42;
+              border-radius: 12px;
+              padding: 1rem 1.25rem;
+              display: flex;
+              flex-direction: column;
+              gap: .75rem;
+            }
+
+            @keyframes pulse-border {
+              0%, 100% { border-color: #7c5cfc; box-shadow: 0 0 0 0 #7c5cfc44; }
+              50%       { border-color: #c8b8ff; box-shadow: 0 0 0 4px #7c5cfc22; }
+            }
+            .font-block.highlight { animation: pulse-border .6s ease; }
+
+            .block-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
+
+            .block-font-name {
+              font-size: .85rem;
+              color: #b09cff;
+              font-weight: 500;
+            }
+
+            .block-remove {
+              background: none;
+              border: 1px solid #3a3a52;
+              border-radius: 4px;
+              color: #555;
+              width: 1.6rem;
+              height: 1.6rem;
+              font-size: 1.1rem;
+              line-height: 1;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: color .15s, border-color .15s;
+            }
+            .block-remove:hover { color: #f08080; border-color: #f08080; }
+
+            .block-size-row {
+              display: flex;
+              align-items: center;
+              gap: .5rem;
+            }
+
+            .block-size-label {
+              font-size: .75rem;
+              color: #555;
+              white-space: nowrap;
+            }
+
+            .block-size-slider {
+              flex: 1;
+              accent-color: #7c5cfc;
+              cursor: pointer;
+            }
+
+            .block-size-display {
+              font-size: .78rem;
+              color: #c8b8ff;
+              min-width: 3em;
+              text-align: right;
+            }
+
+            .block-preview {
+              color: #f0f0ff;
+              line-height: 1.45;
+              white-space: pre-wrap;
+              word-break: break-word;
+              min-height: 1.5em;
             }
 
             /* ── No fonts notice ── */
             #no-fonts-notice {
-                display: none;
-                background: #2a1a1a;
-                border: 1px solid #5a2a2a;
-                border-radius: 10px;
-                padding: 0.9rem 1.2rem;
-                font-size: 0.88rem;
-                color: #f08080;
-                max-width: 860px;
-                width: 100%;
+              display: none;
+              background: #2a1a1a;
+              border: 1px solid #5a2a2a;
+              border-radius: 10px;
+              padding: .9rem 1.2rem;
+              font-size: .88rem;
+              color: #f08080;
+              max-width: 860px;
+              width: 100%;
             }
         </style>
     </head>
@@ -233,187 +241,206 @@
         <h1>🔤 Font Tester</h1>
 
         <div id="no-fonts-notice">
-            Nenhuma fonte foi encontrada. Adicione arquivos
-            <code>.woff2</code> à pasta <code>fonts/woff2/</code> e recarregue a
-            página.
+            Nenhuma fonte encontrada. Adicione arquivos <code>.woff2</code> à
+            pasta <code>fonts/woff2/</code> e recarregue a página.
         </div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <label>
-                Fonte
-                <select id="font-select"></select>
-            </label>
-
-            <label class="size-label">
-                Tamanho
-                <div class="size-row">
-                    <input
-                        type="range"
-                        id="font-size"
-                        min="8"
-                        max="200"
-                        value="48"
-                        step="1"
-                    />
-                    <span class="size-display" id="size-display">48px</span>
-                </div>
-            </label>
-        </div>
-
-        <!-- Free-text preview -->
-        <div class="preview-wrap">
-            <span class="section-title">Texto livre</span>
+        <!-- Text input -->
+        <div class="input-section">
+            <span class="section-title">Texto de comparação</span>
             <div class="preset-btns">
                 <button class="preset-btn" data-preset="upper">ABC</button>
                 <button class="preset-btn" data-preset="lower">abc</button>
                 <button class="preset-btn" data-preset="hiragana">あん</button>
                 <button class="preset-btn" data-preset="katakana">アン</button>
             </div>
-            <textarea id="preview-text" spellcheck="false">
+            <textarea id="input-text" spellcheck="false">
 O rato roeu a roupa do rei de Roma.</textarea>
-            <span class="font-badge" id="font-badge"></span>
         </div>
 
-        <!-- Alphabet specimen -->
-        <div class="specimen-wrap">
-            <span class="section-title">Espécime tipográfico</span>
-            <div class="specimen-rows">
-                <div class="specimen-row sz-sm" id="spec-sm"></div>
-                <div class="specimen-row sz-md" id="spec-md"></div>
-                <div class="specimen-row sz-lg" id="spec-lg"></div>
-                <div class="specimen-row sz-xl" id="spec-xl"></div>
+        <!-- Add font -->
+        <div class="add-bar">
+            <span class="section-title">Fontes para comparar</span>
+            <div class="add-row">
+                <select id="font-select"></select>
+                <button id="add-font-btn">+ Adicionar</button>
+            </div>
+        </div>
+
+        <!-- Font comparison blocks -->
+        <div id="font-blocks">
+            <div class="empty-state" id="empty-state">
+                Nenhuma fonte adicionada ainda.<br />
+                Selecione uma fonte acima e clique em
+                <strong>+ Adicionar</strong>.
             </div>
         </div>
 
         <script>
             // ─────────────────────────────────────────────────────────────
-            // FONT REGISTRY
-            // Add each .woff2 file here as: { name, file }
-            // The page will @font-face-load them automatically.
+            // FONT REGISTRY — adicione entradas aqui ao colocar novos woff2
             // ─────────────────────────────────────────────────────────────
             const FONTS = [
-                {
-                    name: "Mokomori Kuro",
-                    file: "mokomori-kuro.woff2",
-                },
-                {
-                    name: "Mini wakuwaku",
-                    file: "mini-wakuwaku.woff2",
-                },
-                {
-                    name: "Mini wakuwaku maru",
-                    file: "mini-wakuwaku-maru.woff2",
-                },
+                { name: "Mokomori Kuro", file: "mokomori-kuro.woff2" },
+                { name: "Mini wakuwaku", file: "mini-wakuwaku.woff2" },
             ];
 
             const FONTS_DIR = "fonts/woff2/";
 
-            const SPECIMEN_TEXT = {
-                md: "The quick brown fox jumps over the lazy dog",
-                sm: "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz",
-                lg: "Pack my box with five dozen liquor jugs",
-                xl: "0123456789",
+            const PRESETS = {
+                upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                lower: "abcdefghijklmnopqrstuvwxyz",
+                hiragana:
+                    "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも やゆよ らりるれろ わをん\nがぎぐげご ざじずぜぞ だぢづでど ばびぶべぼ ぱぴぷぺぽ",
+                katakana:
+                    "アイウエオ カキクケコ サシスセソ タチツテト ナニヌネノ ハヒフヘホ マミムメモ ヤユヨ ラリルレロ ワヲン\nガギグゲゴ ザジズゼゾ ダヂヅデド バビブベボ パピプペポ",
             };
 
             // ── DOM refs ──────────────────────────────────────────────────
+            const inputText = document.getElementById("input-text");
             const fontSelect = document.getElementById("font-select");
-            const fontSizeInput = document.getElementById("font-size");
-            const sizeDisplay = document.getElementById("size-display");
-            const previewText = document.getElementById("preview-text");
-            const fontBadge = document.getElementById("font-badge");
+            const addFontBtn = document.getElementById("add-font-btn");
+            const blocksContainer = document.getElementById("font-blocks");
+            const emptyState = document.getElementById("empty-state");
             const noFontsNote = document.getElementById("no-fonts-notice");
 
-            const specSm = document.getElementById("spec-sm");
-            const specMd = document.getElementById("spec-md");
-            const specLg = document.getElementById("spec-lg");
-            const specXl = document.getElementById("spec-xl");
+            let blockCounter = 0;
 
-            // ── Load fonts and populate select ───────────────────────────
+            // ── Register @font-face and populate <select> ─────────────────
             function loadFonts() {
                 if (!FONTS.length) {
                     noFontsNote.style.display = "block";
+                    addFontBtn.disabled = true;
                     return;
                 }
-
                 const style = document.createElement("style");
                 let css = "";
-
                 FONTS.forEach(({ name, file }) => {
-                    css += `
-          @font-face {
-            font-family: "${name}";
-            src: url("${FONTS_DIR}${file}") format("woff2");
-            font-display: swap;
-          }`;
-
+                    css += `@font-face { font-family: "${name}"; src: url("${FONTS_DIR}${file}") format("woff2"); font-display: swap; }\n`;
                     const opt = document.createElement("option");
                     opt.value = name;
                     opt.textContent = name;
                     fontSelect.appendChild(opt);
                 });
-
                 style.textContent = css;
                 document.head.appendChild(style);
             }
 
-            // ── Apply selected font everywhere ───────────────────────────
-            function applyFont(name) {
-                const ff = `"${name}", serif`;
-                previewText.style.fontFamily = ff;
-                [specSm, specMd, specLg, specXl].forEach(
-                    (el) => (el.style.fontFamily = ff),
+            // ── Add a comparison block for the given font name ────────────
+            function addFontBlock(fontName) {
+                // Pulse-highlight if already present
+                const existing = blocksContainer.querySelector(
+                    `.font-block[data-font="${CSS.escape(fontName)}"]`,
                 );
-                fontBadge.textContent = name;
+                if (existing) {
+                    existing.classList.remove("highlight");
+                    void existing.offsetWidth; // restart animation
+                    existing.classList.add("highlight");
+                    existing.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                    });
+                    return;
+                }
+
+                emptyState.style.display = "none";
+
+                const block = document.createElement("div");
+                block.className = "font-block";
+                block.dataset.font = fontName;
+                block.id = `block-${blockCounter++}`;
+
+                // — Header —
+                const header = document.createElement("div");
+                header.className = "block-header";
+
+                const nameSpan = document.createElement("span");
+                nameSpan.className = "block-font-name";
+                nameSpan.textContent = fontName;
+
+                const removeBtn = document.createElement("button");
+                removeBtn.className = "block-remove";
+                removeBtn.title = "Remover";
+                removeBtn.textContent = "×";
+                removeBtn.addEventListener("click", () => {
+                    block.remove();
+                    if (!blocksContainer.querySelector(".font-block")) {
+                        emptyState.style.display = "";
+                    }
+                });
+
+                header.appendChild(nameSpan);
+                header.appendChild(removeBtn);
+
+                // — Size row —
+                const sizeRow = document.createElement("div");
+                sizeRow.className = "block-size-row";
+
+                const sizeLabel = document.createElement("span");
+                sizeLabel.className = "block-size-label";
+                sizeLabel.textContent = "Tamanho";
+
+                const sizeSlider = document.createElement("input");
+                sizeSlider.type = "range";
+                sizeSlider.className = "block-size-slider";
+                sizeSlider.min = "8";
+                sizeSlider.max = "200";
+                sizeSlider.value = "48";
+                sizeSlider.step = "1";
+
+                const sizeDisplay = document.createElement("span");
+                sizeDisplay.className = "block-size-display";
+                sizeDisplay.textContent = "48px";
+
+                sizeSlider.addEventListener("input", () => {
+                    preview.style.fontSize = sizeSlider.value + "px";
+                    sizeDisplay.textContent = sizeSlider.value + "px";
+                });
+
+                sizeRow.appendChild(sizeLabel);
+                sizeRow.appendChild(sizeSlider);
+                sizeRow.appendChild(sizeDisplay);
+
+                // — Preview —
+                const preview = document.createElement("div");
+                preview.className = "block-preview";
+                preview.style.fontFamily = `"${fontName}", serif`;
+                preview.style.fontSize = "48px";
+                preview.textContent = inputText.value;
+
+                block.appendChild(header);
+                block.appendChild(sizeRow);
+                block.appendChild(preview);
+
+                blocksContainer.appendChild(block);
             }
 
-            // ── Apply font size to preview only ──────────────────────────
-            function applySize(px) {
-                previewText.style.fontSize = px + "px";
-                sizeDisplay.textContent = px + "px";
+            // ── Push current textarea value to all preview blocks ─────────
+            function syncPreviews() {
+                blocksContainer
+                    .querySelectorAll(".block-preview")
+                    .forEach((el) => {
+                        el.textContent = inputText.value;
+                    });
             }
 
-            // ── Populate specimen rows ────────────────────────────────────
-            function populateSpecimen() {
-                specSm.textContent = SPECIMEN_TEXT.sm;
-                specMd.textContent = SPECIMEN_TEXT.md;
-                specLg.textContent = SPECIMEN_TEXT.lg;
-                specXl.textContent = SPECIMEN_TEXT.xl;
-            }
+            // ── Event listeners ───────────────────────────────────────────
+            addFontBtn.addEventListener("click", () => {
+                if (fontSelect.value) addFontBlock(fontSelect.value);
+            });
 
-            // ── Preset texts ─────────────────────────────────────────
-            const PRESETS = {
-                upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                lower: "abcdefghijklmnopqrstuvwxyz",
-                hiragana:
-                    "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも やゆよ らりるれろ わをん",
-                katakana:
-                    "アイウエオ カキクケコ サシスセソ タチツテト ナニヌネノ ハヒフヘホ マミムメモ ヤユヨ ラリルレロ ワヲン",
-            };
+            inputText.addEventListener("input", syncPreviews);
 
             document.querySelectorAll(".preset-btn").forEach((btn) => {
                 btn.addEventListener("click", () => {
-                    previewText.value = PRESETS[btn.dataset.preset];
+                    inputText.value = PRESETS[btn.dataset.preset];
+                    syncPreviews();
                 });
             });
 
-            // ── Event listeners ──────────────────────────────────────────
-            fontSelect.addEventListener("change", () =>
-                applyFont(fontSelect.value),
-            );
-
-            fontSizeInput.addEventListener("input", () =>
-                applySize(Number(fontSizeInput.value)),
-            );
-
-            // ── Init ─────────────────────────────────────────────────────
+            // ── Init ──────────────────────────────────────────────────────
             loadFonts();
-            populateSpecimen();
-
-            if (FONTS.length) {
-                applyFont(FONTS[0].name);
-                applySize(Number(fontSizeInput.value));
-            }
         </script>
     </body>
 </html>
+""

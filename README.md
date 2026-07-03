@@ -1,15 +1,15 @@
 # Font Tester
 
-Página HTML estática para visualizar e testar fontes customizadas em formato **woff2**.
+Página HTML para visualizar e comparar fontes customizadas em formato **woff2**.
 
-Selecione uma fonte no menu, ajuste o tamanho e digite qualquer texto para ver como ela se comporta — sem frameworks, sem dependências externas.
+Adicione quantas fontes quiser, ajuste o tamanho de cada uma individualmente e compare a renderização lado a lado com o mesmo texto — sem frameworks, sem dependências externas.
 
 ## Funcionalidades
 
-- **Seletor de fontes** — lista todas as fontes registradas no projeto
-- **Texto livre** — textarea editável renderizada na fonte selecionada
-- **Controle de tamanho** — slider de 8 px a 200 px com exibição ao vivo
-- **Espécime tipográfico** — alfabeto e pangramas em 4 tamanhos fixos para avaliação rápida
+- **Comparação múltipla** — adicione várias fontes e veja todas renderizando o mesmo texto
+- **Texto de comparação** — textarea editável compartilhada entre todos os blocos
+- **Presets de texto** — atalhos para alfabeto latino (maiúsculo/minúsculo), hiragana e katakana
+- **Tamanho independente** — slider de 8–200 px por bloco de fonte
 
 ## Como usar
 
@@ -27,13 +27,14 @@ const FONTS = [
 ];
 ```
 
-3. Recarregue a página — a fonte aparecerá automaticamente no menu.
+3. Recarregue a página — a fonte aparecerá no seletor.
 
 ## Estrutura do projeto
 
 ```
 font_test/
 ├── index.html          # Página principal
+├── serve.bat           # Atalho para iniciar o servidor local (Python 3)
 ├── README.md
 └── fonts/
     ├── sources.txt     # Referências de origem das fontes
