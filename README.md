@@ -45,3 +45,4 @@ font_test/
 | KF Himaji Fude | `KFhimajiFUDE.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/kf-himaji-fude-font-download/) |
 | Keinann Maru POP JP | `けいなん丸ポップ体JP.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/keinannmarupop-jp-font-download/) |
 | Nikumaru | `nikumaru.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/nikumaru-free-font/) |
+| Doki Doki Fantasia | `DokiDokiFantasia.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/doki-doki-fantasia-download/) |
