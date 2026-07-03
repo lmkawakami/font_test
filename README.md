@@ -45,4 +45,4 @@ font_test/
 
 | Nome | Arquivo | Fonte |
 |------|---------|-------|
-| Mikiyu Mokomori Kuro | `mikiyu-mokomori-kuro.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/mokomori-kuro-beta-download/) |
+| Mokomori Kuro | `mikiyu-mokomori-kuro.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/mokomori-kuro-beta-download/) |
