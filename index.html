@@ -4,236 +4,329 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Font Tester</title>
+        <!--
+          wawoff2: decompressor woff2 em WASM puro.
+          Deve ser configurado ANTES de carregar o script para capturar
+          o callback onRuntimeInitialized do Emscripten.
+        -->
+        <script>
+            var _wawoff2Resolve;
+            window.wawoff2Ready = new Promise(function (resolve) {
+                _wawoff2Resolve = resolve;
+            });
+            window.Module = {
+                onRuntimeInitialized: function () {
+                    _wawoff2Resolve();
+                },
+            };
+        </script>
+        <script src="https://unpkg.com/wawoff2@2.0.1/build/decompress_binding.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
         <style>
-            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
             body {
-              font-family: system-ui, sans-serif;
-              background: #0f0f13;
-              color: #e8e8f0;
-              min-height: 100vh;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              padding: 2.5rem 1rem 4rem;
-              gap: 1.75rem;
+                font-family: system-ui, sans-serif;
+                background: #0f0f13;
+                color: #e8e8f0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2.5rem 1rem 4rem;
+                gap: 1.75rem;
             }
 
             h1 {
-              font-size: 1.4rem;
-              font-weight: 600;
-              letter-spacing: .05em;
-              color: #c8b8ff;
+                font-size: 1.4rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                color: #c8b8ff;
             }
 
             .section-title {
-              font-size: .78rem;
-            </head>  color: #666;
-              letter-spacing: .06em;
-              text-transform: uppercase;
+                font-size: 0.78rem;
+                color: #666;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
             }
 
-            /* ── Text input section ── */
+            /* ── Text input ── */
             .input-section {
-              width: 100%;
-              max-width: 860px;
-              display: flex;
-              flex-direction: column;
-              gap: .6rem;
+                width: 100%;
+                max-width: 860px;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
             }
 
             .preset-btns {
-              display: flex;
-              flex-wrap: wrap;
-              gap: .4rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
             }
 
             .preset-btn {
-              background: #1a1a24;
-              border: 1px solid #3a3a52;
-              border-radius: 6px;
-              color: #c8b8ff;
-              padding: .3rem .75rem;
-              font-size: .9rem;
-              cursor: pointer;
-              font-family: system-ui, sans-serif;
-              transition: background .15s, border-color .15s;
+                background: #1a1a24;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #c8b8ff;
+                padding: 0.3rem 0.75rem;
+                font-size: 0.9rem;
+                font-family: system-ui, sans-serif;
+                cursor: pointer;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s;
             }
-            .preset-btn:hover  { background: #25253a; border-color: #7c5cfc; }
-            .preset-btn:active { background: #7c5cfc33; }
+            .preset-btn:hover {
+                background: #25253a;
+                border-color: #7c5cfc;
+            }
+            .preset-btn:active {
+                background: #7c5cfc33;
+            }
 
             #input-text {
-              background: #1a1a24;
-              border: 1px solid #2e2e42;
-              border-radius: 12px;
-              padding: 1rem 1.25rem;
-              height: 100px;
-              width: 100%;
-              resize: vertical;
-              font-family: 'Courier New', Courier, monospace;
-              font-size: 1rem;
-              color: #f0f0ff;
-              line-height: 1.5;
-              outline: none;
-              transition: border-color .2s;
+                background: #1a1a24;
+                border: 1px solid #2e2e42;
+                border-radius: 12px;
+                padding: 1rem 1.25rem;
+                height: 100px;
+                width: 100%;
+                resize: vertical;
+                font-family: "Courier New", Courier, monospace;
+                font-size: 1rem;
+                color: #f0f0ff;
+                line-height: 1.5;
+                outline: none;
+                transition: border-color 0.2s;
             }
-            #input-text:focus { border-color: #7c5cfc; }
+            #input-text:focus {
+                border-color: #7c5cfc;
+            }
 
             /* ── Add font bar ── */
             .add-bar {
-              width: 100%;
-              max-width: 860px;
-              display: flex;
-              flex-direction: column;
-              gap: .6rem;
+                width: 100%;
+                max-width: 860px;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
             }
 
             .add-row {
-              display: flex;
-              gap: .6rem;
-              align-items: center;
+                display: flex;
+                gap: 0.6rem;
+                align-items: center;
             }
 
             select {
-              flex: 1;
-              background: #1a1a24;
-              border: 1px solid #3a3a52;
-              border-radius: 6px;
-              color: #e8e8f0;
-              padding: .45rem .6rem;
-              font-size: .9rem;
-              cursor: pointer;
-              outline: none;
-              transition: border-color .2s;
+                flex: 1;
+                background: #1a1a24;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #e8e8f0;
+                padding: 0.45rem 0.6rem;
+                font-size: 0.9rem;
+                cursor: pointer;
+                outline: none;
+                transition: border-color 0.2s;
             }
-            select:focus { border-color: #7c5cfc; }
+            select:focus {
+                border-color: #7c5cfc;
+            }
 
             #add-font-btn {
-              background: #7c5cfc;
-              border: none;
-              border-radius: 6px;
-              color: #fff;
-              padding: .45rem 1.1rem;
-              font-size: .9rem;
-              font-weight: 500;
-              cursor: pointer;
-              white-space: nowrap;
-              transition: background .15s;
+                background: #7c5cfc;
+                border: none;
+                border-radius: 6px;
+                color: #fff;
+                padding: 0.45rem 1.1rem;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: background 0.15s;
             }
-            #add-font-btn:hover    { background: #9070ff; }
-            #add-font-btn:active   { background: #6040e0; }
-            #add-font-btn:disabled { background: #3a3a52; cursor: default; }
+            #add-font-btn:hover {
+                background: #9070ff;
+            }
+            #add-font-btn:active {
+                background: #6040e0;
+            }
+            #add-font-btn:disabled {
+                background: #3a3a52;
+                cursor: default;
+            }
 
             /* ── Font blocks grid ── */
             #font-blocks {
-              width: 100%;
-              max-width: 860px;
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-              gap: 1rem;
+                width: 100%;
+                max-width: 860px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+                gap: 1rem;
             }
 
             .empty-state {
-              grid-column: 1 / -1;
-              text-align: center;
-              color: #444;
-              font-size: .9rem;
-              padding: 2.5rem 1rem;
-              border: 1px dashed #2a2a3a;
-              border-radius: 12px;
+                grid-column: 1 / -1;
+                text-align: center;
+                color: #444;
+                font-size: 0.9rem;
+                padding: 2.5rem 1rem;
+                border: 1px dashed #2a2a3a;
+                border-radius: 12px;
             }
-            .empty-state strong { color: #666; }
+            .empty-state strong {
+                color: #666;
+            }
 
             /* ── Individual font block ── */
             .font-block {
-              background: #1a1a24;
-              border: 1px solid #2e2e42;
-              border-radius: 12px;
-              padding: 1rem 1.25rem;
-              display: flex;
-              flex-direction: column;
-              gap: .75rem;
+                background: #1a1a24;
+                border: 1px solid #2e2e42;
+                border-radius: 12px;
+                padding: 1rem 1.25rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
             }
 
             @keyframes pulse-border {
-              0%, 100% { border-color: #7c5cfc; box-shadow: 0 0 0 0 #7c5cfc44; }
-              50%       { border-color: #c8b8ff; box-shadow: 0 0 0 4px #7c5cfc22; }
+                0%,
+                100% {
+                    border-color: #7c5cfc;
+                    box-shadow: 0 0 0 0 #7c5cfc44;
+                }
+                50% {
+                    border-color: #c8b8ff;
+                    box-shadow: 0 0 0 4px #7c5cfc22;
+                }
             }
-            .font-block.highlight { animation: pulse-border .6s ease; }
+            .font-block.highlight {
+                animation: pulse-border 0.6s ease;
+            }
 
             .block-header {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
             }
 
             .block-font-name {
-              font-size: .85rem;
-              color: #b09cff;
-              font-weight: 500;
+                font-size: 0.85rem;
+                color: #b09cff;
+                font-weight: 500;
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin-right: 0.5rem;
+            }
+
+            .block-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                flex-shrink: 0;
+            }
+
+            .block-save-btn {
+                background: none;
+                border: 1px solid #3a3a52;
+                border-radius: 4px;
+                color: #888;
+                padding: 0.2rem 0.55rem;
+                font-size: 0.72rem;
+                font-family: system-ui, sans-serif;
+                cursor: pointer;
+                white-space: nowrap;
+                transition:
+                    color 0.15s,
+                    border-color 0.15s;
+            }
+            .block-save-btn:hover:not(:disabled) {
+                color: #c8b8ff;
+                border-color: #7c5cfc;
+            }
+            .block-save-btn:disabled {
+                opacity: 0.35;
+                cursor: default;
             }
 
             .block-remove {
-              background: none;
-              border: 1px solid #3a3a52;
-              border-radius: 4px;
-              color: #555;
-              width: 1.6rem;
-              height: 1.6rem;
-              font-size: 1.1rem;
-              line-height: 1;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              transition: color .15s, border-color .15s;
+                background: none;
+                border: 1px solid #3a3a52;
+                border-radius: 4px;
+                color: #555;
+                width: 1.6rem;
+                height: 1.6rem;
+                font-size: 1.1rem;
+                line-height: 1;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition:
+                    color 0.15s,
+                    border-color 0.15s;
             }
-            .block-remove:hover { color: #f08080; border-color: #f08080; }
+            .block-remove:hover {
+                color: #f08080;
+                border-color: #f08080;
+            }
 
             .block-size-row {
-              display: flex;
-              align-items: center;
-              gap: .5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
             }
 
             .block-size-label {
-              font-size: .75rem;
-              color: #555;
-              white-space: nowrap;
+                font-size: 0.75rem;
+                color: #555;
+                white-space: nowrap;
             }
 
             .block-size-slider {
-              flex: 1;
-              accent-color: #7c5cfc;
-              cursor: pointer;
+                flex: 1;
+                accent-color: #7c5cfc;
+                cursor: pointer;
             }
 
             .block-size-display {
-              font-size: .78rem;
-              color: #c8b8ff;
-              min-width: 3em;
-              text-align: right;
+                font-size: 0.78rem;
+                color: #c8b8ff;
+                min-width: 3em;
+                text-align: right;
             }
 
             .block-preview {
-              color: #f0f0ff;
-              line-height: 1.45;
-              white-space: pre-wrap;
-              word-break: break-word;
-              min-height: 1.5em;
+                color: #f0f0ff;
+                line-height: 1.45;
+                white-space: pre-wrap;
+                word-break: break-word;
+                min-height: 1.5em;
             }
 
             /* ── No fonts notice ── */
             #no-fonts-notice {
-              display: none;
-              background: #2a1a1a;
-              border: 1px solid #5a2a2a;
-              border-radius: 10px;
-              padding: .9rem 1.2rem;
-              font-size: .88rem;
-              color: #f08080;
-              max-width: 860px;
-              width: 100%;
+                display: none;
+                background: #2a1a1a;
+                border: 1px solid #5a2a2a;
+                border-radius: 10px;
+                padding: 0.9rem 1.2rem;
+                font-size: 0.88rem;
+                color: #f08080;
+                max-width: 860px;
+                width: 100%;
             }
         </style>
     </head>
@@ -241,8 +334,8 @@
         <h1>🔤 Font Tester</h1>
 
         <div id="no-fonts-notice">
-            Nenhuma fonte encontrada. Adicione arquivos <code>.woff2</code> à
-            pasta <code>fonts/woff2/</code> e recarregue a página.
+            Nenhuma fonte registrada. Adicione entradas ao array
+            <code>FONTS</code> em <code>index.html</code> e recarregue a página.
         </div>
 
         <!-- Text input -->
@@ -278,11 +371,14 @@ O rato roeu a roupa do rei de Roma.</textarea>
 
         <script>
             // ─────────────────────────────────────────────────────────────
-            // FONT REGISTRY — adicione entradas aqui ao colocar novos woff2
+            // FONT REGISTRY
+            // Adicione entradas aqui ao colocar novos arquivos em fonts/woff2/
             // ─────────────────────────────────────────────────────────────
             const FONTS = [
-                { name: "Mokomori Kuro", file: "mokomori-kuro.woff2" },
-                { name: "Mini wakuwaku", file: "mini-wakuwaku.woff2" },
+                {
+                    name: "Mokomori Kuro",
+                    file: "mokomori-kuro.woff2",
+                },
             ];
 
             const FONTS_DIR = "fonts/woff2/";
@@ -302,17 +398,49 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const addFontBtn = document.getElementById("add-font-btn");
             const blocksContainer = document.getElementById("font-blocks");
             const emptyState = document.getElementById("empty-state");
-            const noFontsNote = document.getElementById("no-fonts-notice");
+            const noFontsNotice = document.getElementById("no-fonts-notice");
 
             let blockCounter = 0;
 
-            // ── Register @font-face and populate <select> ─────────────────
+            // ── opentype.js cache — fontName → Promise<opentype.Font> ─────
+            const fontCache = new Map();
+
+            async function fetchAndParseFont(url) {
+                const r = await fetch(url);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const buf = await r.arrayBuffer();
+
+                const ext = url.split(".").pop().toLowerCase();
+                if (ext === "woff2") {
+                    // opentype.js não consegue descomprimir Brotli (woff2) no
+                    // browser. Usamos wawoff2 (WASM) para converter para sfnt
+                    // antes de passar para o opentype.parse().
+                    await window.wawoff2Ready;
+                    const sfnt = Module.decompress(new Uint8Array(buf));
+                    return opentype.parse(sfnt.slice().buffer);
+                }
+
+                return opentype.parse(buf);
+            }
+
+            function getOrLoadFont(fontName) {
+                if (fontCache.has(fontName)) return fontCache.get(fontName);
+                const entry = FONTS.find((f) => f.name === fontName);
+                if (!entry)
+                    return Promise.reject(new Error("Fonte não registrada"));
+                const promise = fetchAndParseFont(`${FONTS_DIR}${entry.file}`);
+                fontCache.set(fontName, promise);
+                return promise;
+            }
+
+            // ── Register @font-face declarations + populate <select> ──────
             function loadFonts() {
                 if (!FONTS.length) {
-                    noFontsNote.style.display = "block";
+                    noFontsNotice.style.display = "block";
                     addFontBtn.disabled = true;
                     return;
                 }
+
                 const style = document.createElement("style");
                 let css = "";
                 FONTS.forEach(({ name, file }) => {
@@ -324,9 +452,12 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 });
                 style.textContent = css;
                 document.head.appendChild(style);
+
+                // Eagerly preload all fonts for SVG export
+                FONTS.forEach(({ name }) => getOrLoadFont(name));
             }
 
-            // ── Add a comparison block for the given font name ────────────
+            // ── Build a comparison block ───────────────────────────────────
             function addFontBlock(fontName) {
                 // Pulse-highlight if already present
                 const existing = blocksContainer.querySelector(
@@ -334,7 +465,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 );
                 if (existing) {
                     existing.classList.remove("highlight");
-                    void existing.offsetWidth; // restart animation
+                    void existing.offsetWidth;
                     existing.classList.add("highlight");
                     existing.scrollIntoView({
                         behavior: "smooth",
@@ -357,20 +488,56 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 const nameSpan = document.createElement("span");
                 nameSpan.className = "block-font-name";
                 nameSpan.textContent = fontName;
+                nameSpan.title = fontName;
 
+                // — Save SVG button —
+                const saveBtn = document.createElement("button");
+                saveBtn.className = "block-save-btn";
+                saveBtn.textContent = "SVG ↓";
+                saveBtn.title = "Exportar como SVG com letras em curvas";
+                saveBtn.disabled = true;
+
+                // Enable once the font is ready (usually already cached from preload)
+                getOrLoadFont(fontName)
+                    .then(() => {
+                        saveBtn.disabled = false;
+                    })
+                    .catch(() => {
+                        saveBtn.title =
+                            "Erro ao carregar fonte para exportação";
+                    });
+
+                saveBtn.addEventListener("click", async () => {
+                    const otFont = await getOrLoadFont(fontName).catch(
+                        () => null,
+                    );
+                    if (otFont)
+                        exportSVG(
+                            otFont,
+                            fontName,
+                            inputText.value,
+                            parseInt(sizeSlider.value),
+                        );
+                });
+
+                // — Remove button —
                 const removeBtn = document.createElement("button");
                 removeBtn.className = "block-remove";
                 removeBtn.title = "Remover";
                 removeBtn.textContent = "×";
                 removeBtn.addEventListener("click", () => {
                     block.remove();
-                    if (!blocksContainer.querySelector(".font-block")) {
+                    if (!blocksContainer.querySelector(".font-block"))
                         emptyState.style.display = "";
-                    }
                 });
 
+                const headerActions = document.createElement("div");
+                headerActions.className = "block-header-actions";
+                headerActions.appendChild(saveBtn);
+                headerActions.appendChild(removeBtn);
+
                 header.appendChild(nameSpan);
-                header.appendChild(removeBtn);
+                header.appendChild(headerActions);
 
                 // — Size row —
                 const sizeRow = document.createElement("div");
@@ -411,11 +578,58 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 block.appendChild(header);
                 block.appendChild(sizeRow);
                 block.appendChild(preview);
-
                 blocksContainer.appendChild(block);
             }
 
-            // ── Push current textarea value to all preview blocks ─────────
+            // ── Export SVG with glyphs as curves ──────────────────────────
+            function exportSVG(otFont, fontName, text, fontSize) {
+                const lines = text.split("\n");
+                const lineHeight = fontSize * 1.5;
+                const padding = Math.round(fontSize * 0.25);
+                const svgPaths = [];
+                let svgWidth = 0;
+                let svgHeight = padding;
+
+                lines.forEach((line, i) => {
+                    const x = padding;
+                    const y = padding + fontSize + i * lineHeight;
+                    svgHeight = y + Math.round(fontSize * 0.3) + padding;
+                    if (!line) return;
+                    const path = otFont.getPath(line, x, y, fontSize);
+                    const bb = path.getBoundingBox();
+                    if (isFinite(bb.x2))
+                        svgWidth = Math.max(svgWidth, bb.x2 + padding);
+                    svgPaths.push(path.toPathData(2));
+                });
+
+                if (svgWidth === 0)
+                    svgWidth =
+                        fontSize * text.replace(/\n/g, "").length * 0.6 +
+                        padding * 2;
+
+                const w = Math.ceil(svgWidth);
+                const h = Math.ceil(svgHeight);
+                const slug = fontName.toLowerCase().replace(/\s+/g, "-");
+
+                const svgContent = [
+                    `<?xml version="1.0" encoding="UTF-8"?>`,
+                    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">`,
+                    ...svgPaths.map((d) => `  <path d="${d}" fill="#000000"/>`),
+                    `</svg>`,
+                ].join("\n");
+
+                const blob = new Blob([svgContent], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${slug}.svg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            // ── Sync all previews with textarea ───────────────────────────
             function syncPreviews() {
                 blocksContainer
                     .querySelectorAll(".block-preview")
@@ -443,4 +657,3 @@ O rato roeu a roupa do rei de Roma.</textarea>
         </script>
     </body>
 </html>
-""
