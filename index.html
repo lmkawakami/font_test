@@ -187,6 +187,34 @@
                 font-size: 64px;
             }
 
+            /* ── Preset buttons ── */
+            .preset-btns {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+
+            .preset-btn {
+                background: #1a1a24;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #c8b8ff;
+                padding: 0.3rem 0.75rem;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s;
+                font-family: system-ui, sans-serif;
+            }
+            .preset-btn:hover {
+                background: #25253a;
+                border-color: #7c5cfc;
+            }
+            .preset-btn:active {
+                background: #7c5cfc33;
+            }
+
             /* ── No fonts notice ── */
             #no-fonts-notice {
                 display: none;
@@ -236,6 +264,12 @@
         <!-- Free-text preview -->
         <div class="preview-wrap">
             <span class="section-title">Texto livre</span>
+            <div class="preset-btns">
+                <button class="preset-btn" data-preset="upper">ABC</button>
+                <button class="preset-btn" data-preset="lower">abc</button>
+                <button class="preset-btn" data-preset="hiragana">あん</button>
+                <button class="preset-btn" data-preset="katakana">アン</button>
+            </div>
             <textarea id="preview-text" spellcheck="false">
 O rato roeu a roupa do rei de Roma.</textarea>
             <span class="font-badge" id="font-badge"></span>
@@ -346,6 +380,22 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 specLg.textContent = SPECIMEN_TEXT.lg;
                 specXl.textContent = SPECIMEN_TEXT.xl;
             }
+
+            // ── Preset texts ─────────────────────────────────────────
+            const PRESETS = {
+                upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                lower: "abcdefghijklmnopqrstuvwxyz",
+                hiragana:
+                    "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも やゆよ らりるれろ わをん",
+                katakana:
+                    "アイウエオ カキクケコ サシスセソ タチツテト ナニヌネノ ハヒフヘホ マミムメモ ヤユヨ ラリルレロ ワヲン",
+            };
+
+            document.querySelectorAll(".preset-btn").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    previewText.value = PRESETS[btn.dataset.preset];
+                });
+            });
 
             // ── Event listeners ──────────────────────────────────────────
             fontSelect.addEventListener("change", () =>
