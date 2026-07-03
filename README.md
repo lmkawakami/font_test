@@ -41,3 +41,4 @@ font_test/
 | Nome | Arquivo | Fonte |
 |------|---------|-------|
 | Mikiyu Mokomori Kuro | `mikiyu-mokomori-kuro.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/mokomori-kuro-beta-download/) |
+| Mini Wakuwaku | `mini-wakuwaku.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/mini-wakuwaku/) |
