@@ -308,6 +308,32 @@
                 text-align: right;
             }
 
+            /* ── Global size control ── */
+            .global-size-row {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .global-size-label {
+                font-size: 0.75rem;
+                color: #555;
+                white-space: nowrap;
+            }
+
+            #global-size-slider {
+                flex: 1;
+                accent-color: #7c5cfc;
+                cursor: pointer;
+            }
+
+            #global-size-display {
+                font-size: 0.78rem;
+                color: #c8b8ff;
+                min-width: 3em;
+                text-align: right;
+            }
+
             .block-preview {
                 color: #f0f0ff;
                 line-height: 1.45;
@@ -349,6 +375,18 @@
             </div>
             <textarea id="input-text" spellcheck="false">
 O rato roeu a roupa do rei de Roma.</textarea>
+            <div class="global-size-row">
+                <span class="global-size-label">Tamanho global</span>
+                <input
+                    type="range"
+                    id="global-size-slider"
+                    min="8"
+                    max="200"
+                    value="48"
+                    step="1"
+                />
+                <span id="global-size-display">48px</span>
+            </div>
         </div>
 
         <!-- Add font -->
@@ -467,6 +505,11 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const blocksContainer = document.getElementById("font-blocks");
             const emptyState = document.getElementById("empty-state");
             const noFontsNotice = document.getElementById("no-fonts-notice");
+            const globalSizeSlider =
+                document.getElementById("global-size-slider");
+            const globalSizeDisplay = document.getElementById(
+                "global-size-display",
+            );
 
             let blockCounter = 0;
 
@@ -712,6 +755,17 @@ O rato roeu a roupa do rei de Roma.</textarea>
             });
 
             inputText.addEventListener("input", syncPreviews);
+
+            globalSizeSlider.addEventListener("input", () => {
+                const val = globalSizeSlider.value;
+                globalSizeDisplay.textContent = val + "px";
+                blocksContainer
+                    .querySelectorAll(".block-size-slider")
+                    .forEach((slider) => {
+                        slider.value = val;
+                        slider.dispatchEvent(new Event("input"));
+                    });
+            });
 
             document.querySelectorAll(".preset-btn").forEach((btn) => {
                 btn.addEventListener("click", () => {
