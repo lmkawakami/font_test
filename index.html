@@ -353,6 +353,29 @@
                 cursor: default;
             }
 
+            #clear-blocks-btn {
+                background: transparent;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #666;
+                padding: 0.45rem 1.1rem;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s,
+                    color 0.15s;
+            }
+            #clear-blocks-btn:hover {
+                border-color: #ff6b6b;
+                color: #ff9999;
+            }
+            #clear-blocks-btn:active {
+                background: #ff6b6b22;
+            }
+
             /* ── Font blocks grid ── */
             #font-blocks {
                 width: 100%;
@@ -617,6 +640,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 <select id="font-select"></select>
                 <button id="add-font-btn">+ Adicionar</button>
                 <button id="add-all-btn">Testar todas</button>
+                <button id="clear-blocks-btn">Desfazer seleção</button>
             </div>
         </div>
 
@@ -745,6 +769,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const fontSelect = document.getElementById("font-select");
             const addFontBtn = document.getElementById("add-font-btn");
             const addAllBtn = document.getElementById("add-all-btn");
+            const clearBlocksBtn = document.getElementById("clear-blocks-btn");
             const blocksContainer = document.getElementById("font-blocks");
             const emptyState = document.getElementById("empty-state");
             const noFontsNotice = document.getElementById("no-fonts-notice");
@@ -1146,6 +1171,13 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 FONTS.forEach(({ name }) => {
                     if (!existing.has(name)) addFontBlock(name);
                 });
+            });
+
+            clearBlocksBtn.addEventListener("click", () => {
+                blocksContainer
+                    .querySelectorAll(".font-block")
+                    .forEach((b) => b.remove());
+                emptyState.style.display = "";
             });
 
             inputText.addEventListener("input", () => {
