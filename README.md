@@ -53,3 +53,4 @@ font_test/
 | Caramel Hops | `YDWcaramelhop.woff2` | [booth.pm](https://booth.pm/ja/items/7748814) |
 | Hakoberamaru Gothic A - ExtraBold | `HakoberaMaruGothicA-ExtraBold.woff2` | [booth.pm](https://booth.pm/ja/items/4898678) |
 | daidaidaidaidaaisuki | `daidaidaidaidaaisuki.woff2` | [booth.pm](https://booth.pm/ja/items/8170479) |
+| Chikara Yowaku | `851CHIKARA-YOWAKU_002.woff2` | [pm85122.onamae.jp](https://pm85122.onamae.jp/851ch-yw.html) |
