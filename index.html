@@ -947,12 +947,12 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 sizeSlider.className = "block-size-slider";
                 sizeSlider.min = "8";
                 sizeSlider.max = "200";
-                sizeSlider.value = "48";
+                sizeSlider.value = globalSizeSlider.value;
                 sizeSlider.step = "1";
 
                 const sizeDisplay = document.createElement("span");
                 sizeDisplay.className = "block-size-display";
-                sizeDisplay.textContent = "48px";
+                sizeDisplay.textContent = globalSizeSlider.value + "px";
 
                 sizeSlider.addEventListener("input", () => {
                     preview.style.fontSize = sizeSlider.value + "px";
@@ -967,7 +967,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 const preview = document.createElement("div");
                 preview.className = "block-preview";
                 preview.style.fontFamily = `"${fontName}", serif`;
-                preview.style.fontSize = "48px";
+                preview.style.fontSize = globalSizeSlider.value + "px";
                 preview.textContent = inputText.value;
 
                 block.appendChild(header);
