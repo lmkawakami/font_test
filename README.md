@@ -52,3 +52,4 @@ font_test/
 | Natsusemi Maru Gothic | `Natsusemi-Maru-Gothic.woff2` | [booth.pm](https://booth.pm/ja/items/4525676) |
 | Caramel Hops | `YDWcaramelhop.woff2` | [booth.pm](https://booth.pm/ja/items/7748814) |
 | Hakoberamaru Gothic A - ExtraBold | `HakoberaMaruGothicA-ExtraBold.woff2` | [booth.pm](https://booth.pm/ja/items/4898678) |
+| daidaidaidaidaaisuki | `daidaidaidaidaaisuki.woff2` | [booth.pm](https://booth.pm/ja/items/8170479) |
