@@ -93,6 +93,146 @@
                 background: #7c5cfc33;
             }
 
+            /* ── User-saved preset buttons ── */
+            #user-preset-btns {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+
+            .preset-btn-saved {
+                border-color: #5caafc66;
+                color: #9dd0ff;
+            }
+            .preset-btn-saved:hover {
+                border-color: #5caafc;
+            }
+
+            .saved-preset-wrap {
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .preset-del-btn {
+                background: none;
+                border: none;
+                color: #444;
+                font-size: 0.9rem;
+                line-height: 1;
+                padding: 0 0.25rem 0 0.1rem;
+                cursor: pointer;
+                transition: color 0.15s;
+            }
+            .preset-del-btn:hover {
+                color: #ff6b6b;
+            }
+
+            /* ── Save text button ── */
+            .save-text-row {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            #save-text-btn {
+                background: transparent;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #666;
+                padding: 0.3rem 0.8rem;
+                font-size: 0.8rem;
+                cursor: pointer;
+                transition:
+                    border-color 0.15s,
+                    color 0.15s;
+            }
+            #save-text-btn:hover {
+                border-color: #7c5cfc;
+                color: #c8b8ff;
+            }
+
+            /* ── Save dialog modal ── */
+            #save-dialog-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.65);
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+            }
+
+            #save-dialog {
+                background: #1a1a2e;
+                border: 1px solid #3a3a52;
+                border-radius: 14px;
+                padding: 1.5rem 2rem;
+                min-width: 320px;
+                max-width: 90vw;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            #save-dialog-title {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #f0f0ff;
+            }
+
+            #save-dialog-desc {
+                font-size: 0.85rem;
+                color: #888;
+                margin: 0;
+            }
+
+            #save-dialog-input {
+                background: #0f0f1a;
+                border: 1px solid #3a3a52;
+                border-radius: 8px;
+                color: #f0f0ff;
+                font-size: 0.95rem;
+                padding: 0.5rem 0.75rem;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+            #save-dialog-input:focus {
+                border-color: #7c5cfc;
+            }
+
+            #save-dialog-actions {
+                display: flex;
+                gap: 0.6rem;
+                justify-content: flex-end;
+            }
+
+            #save-dialog-cancel {
+                background: transparent;
+                border: 1px solid #3a3a52;
+                border-radius: 6px;
+                color: #888;
+                padding: 0.4rem 1rem;
+                cursor: pointer;
+                transition: border-color 0.15s;
+            }
+            #save-dialog-cancel:hover {
+                border-color: #666;
+                color: #aaa;
+            }
+
+            #save-dialog-confirm {
+                background: #7c5cfc;
+                border: none;
+                border-radius: 6px;
+                color: #fff;
+                padding: 0.4rem 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.15s;
+            }
+            #save-dialog-confirm:hover {
+                background: #9070ff;
+            }
+
             #input-text {
                 background: #1a1a24;
                 border: 1px solid #2e2e42;
@@ -400,6 +540,7 @@
                 <button class="preset-btn" data-preset="hiragana">あん</button>
                 <button class="preset-btn" data-preset="katakana">アン</button>
             </div>
+            <div id="user-preset-btns"></div>
             <textarea id="input-text" spellcheck="false">
 O rato roeu a roupa do rei de Roma.</textarea>
             <div class="global-size-row">
@@ -413,6 +554,9 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     step="1"
                 />
                 <span id="global-size-display">48px</span>
+            </div>
+            <div class="save-text-row">
+                <button id="save-text-btn">💾 Salvar texto como preset</button>
             </div>
         </div>
 
@@ -432,6 +576,26 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 Nenhuma fonte adicionada ainda.<br />
                 Selecione uma fonte acima e clique em
                 <strong>+ Adicionar</strong>.
+            </div>
+        </div>
+
+        <!-- Save preset dialog -->
+        <div id="save-dialog-overlay">
+            <div id="save-dialog">
+                <div id="save-dialog-title">Salvar texto como preset</div>
+                <p id="save-dialog-desc">
+                    Defina um apelido para identificar este preset:
+                </p>
+                <input
+                    type="text"
+                    id="save-dialog-input"
+                    placeholder="Ex: Pangrama PT"
+                    maxlength="40"
+                />
+                <div id="save-dialog-actions">
+                    <button id="save-dialog-cancel">Cancelar</button>
+                    <button id="save-dialog-confirm">Salvar</button>
+                </div>
             </div>
         </div>
 
@@ -538,6 +702,18 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 document.getElementById("global-size-slider");
             const globalSizeDisplay = document.getElementById(
                 "global-size-display",
+            );
+            const saveTextBtn = document.getElementById("save-text-btn");
+            const userPresetBtns = document.getElementById("user-preset-btns");
+            const saveDialogOverlay = document.getElementById(
+                "save-dialog-overlay",
+            );
+            const saveDialogInput =
+                document.getElementById("save-dialog-input");
+            const saveDialogCancel =
+                document.getElementById("save-dialog-cancel");
+            const saveDialogConfirm = document.getElementById(
+                "save-dialog-confirm",
             );
 
             let blockCounter = 0;
@@ -770,6 +946,93 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 URL.revokeObjectURL(url);
             }
 
+            // ── Saved presets (localStorage) ──────────────────────────────
+            const STORAGE_KEY = "fontTester_savedPresets";
+
+            function getSavedPresets() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                } catch {
+                    return [];
+                }
+            }
+
+            function persistPresets(presets) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
+            }
+
+            function addSavedPresetButton({ label, text }) {
+                const wrap = document.createElement("span");
+                wrap.className = "saved-preset-wrap";
+
+                const btn = document.createElement("button");
+                btn.className = "preset-btn preset-btn-saved";
+                btn.textContent = label;
+                btn.title = text.length > 80 ? text.slice(0, 80) + "…" : text;
+                btn.addEventListener("click", () => {
+                    inputText.value = text;
+                    syncPreviews();
+                });
+
+                const del = document.createElement("button");
+                del.className = "preset-del-btn";
+                del.textContent = "×";
+                del.title = "Remover preset";
+                del.addEventListener("click", () => {
+                    const updated = getSavedPresets().filter(
+                        (p) => !(p.label === label && p.text === text),
+                    );
+                    persistPresets(updated);
+                    wrap.remove();
+                });
+
+                wrap.appendChild(btn);
+                wrap.appendChild(del);
+                userPresetBtns.appendChild(wrap);
+            }
+
+            function loadSavedPresets() {
+                getSavedPresets().forEach(addSavedPresetButton);
+            }
+
+            // ── Save dialog logic ─────────────────────────────────────────
+            function openDialog() {
+                saveDialogInput.value = "";
+                saveDialogOverlay.style.display = "flex";
+                saveDialogInput.focus();
+            }
+
+            function closeDialog() {
+                saveDialogOverlay.style.display = "none";
+            }
+
+            saveTextBtn.addEventListener("click", openDialog);
+
+            saveDialogCancel.addEventListener("click", closeDialog);
+
+            saveDialogOverlay.addEventListener("click", (e) => {
+                if (e.target === saveDialogOverlay) closeDialog();
+            });
+
+            saveDialogInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") saveDialogConfirm.click();
+                if (e.key === "Escape") closeDialog();
+            });
+
+            saveDialogConfirm.addEventListener("click", () => {
+                const label = saveDialogInput.value.trim();
+                if (!label) {
+                    saveDialogInput.focus();
+                    return;
+                }
+                const preset = { label, text: inputText.value };
+                const presets = getSavedPresets();
+                presets.push(preset);
+                persistPresets(presets);
+                addSavedPresetButton(preset);
+                closeDialog();
+            });
+
             // ── Sync all previews with textarea ───────────────────────────
             function syncPreviews() {
                 blocksContainer
@@ -816,6 +1079,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             });
 
             // ── Init ──────────────────────────────────────────────────────
+            loadSavedPresets();
             loadFonts();
         </script>
     </body>
