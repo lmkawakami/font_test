@@ -521,6 +521,32 @@
                 text-align: right;
             }
 
+            .individual-sizes-label {
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+                font-size: 0.75rem;
+                color: #555;
+                white-space: nowrap;
+                cursor: pointer;
+                padding-left: 0.4rem;
+                border-left: 1px solid #2e2e42;
+                user-select: none;
+            }
+            .individual-sizes-label:hover {
+                color: #888;
+            }
+            .individual-sizes-label input[type="checkbox"] {
+                accent-color: #7c5cfc;
+                cursor: pointer;
+                width: 0.85rem;
+                height: 0.85rem;
+            }
+
+            #font-blocks.hide-individual-sizes .block-size-row {
+                display: none;
+            }
+
             .block-preview {
                 color: #f0f0ff;
                 line-height: 1.45;
@@ -574,6 +600,10 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     step="1"
                 />
                 <span id="global-size-display">48px</span>
+                <label class="individual-sizes-label">
+                    <input type="checkbox" id="individual-sizes-toggle" />
+                    Tamanhos individuais
+                </label>
             </div>
             <div class="save-text-row">
                 <button id="save-text-btn">Salvar exemplo</button>
@@ -722,6 +752,9 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 document.getElementById("global-size-slider");
             const globalSizeDisplay = document.getElementById(
                 "global-size-display",
+            );
+            const individualSizesToggle = document.getElementById(
+                "individual-sizes-toggle",
             );
             const saveTextBtn = document.getElementById("save-text-btn");
             const userPresetBtns = document.getElementById("user-preset-btns");
@@ -1131,6 +1164,13 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     });
             });
 
+            individualSizesToggle.addEventListener("change", () => {
+                blocksContainer.classList.toggle(
+                    "hide-individual-sizes",
+                    !individualSizesToggle.checked,
+                );
+            });
+
             document.querySelectorAll(".preset-btn").forEach((btn) => {
                 btn.addEventListener("click", () => {
                     inputText.value = PRESETS[btn.dataset.preset];
@@ -1140,6 +1180,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             });
 
             // ── Init ──────────────────────────────────────────────────────
+            blocksContainer.classList.add("hide-individual-sizes");
             loadSavedPresets();
             syncPresetHighlight();
             loadFonts();
