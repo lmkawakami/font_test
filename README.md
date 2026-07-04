@@ -48,3 +48,4 @@ font_test/
 | Doki Doki Fantasia | `DokiDokiFantasia.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/doki-doki-fantasia-download/) |
 | MOBO Bold | `MOBO-Bold.woff2` | [booth.pm](https://flopdesign.booth.pm/items/4647262) |
 | Petanko Bold | `Petanko-Bold.woff2` | [booth.pm](https://flopdesign.booth.pm/items/7857280) |
+| Futehodo Maru Gothic | `Futehodo-MaruGothic.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/futehodo-maru-gothic-font-download/) |
