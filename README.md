@@ -51,3 +51,4 @@ font_test/
 | Futehodo Maru Gothic | `Futehodo-MaruGothic.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/futehodo-maru-gothic-font-download/) |
 | Natsusemi Maru Gothic | `Natsusemi-Maru-Gothic.woff2` | [booth.pm](https://booth.pm/ja/items/4525676) |
 | Caramel Hops | `YDWcaramelhop.woff2` | [booth.pm](https://booth.pm/ja/items/7748814) |
+| Hakoberamaru Gothic A - ExtraBold | `HakoberaMaruGothicA-ExtraBold.woff2` | [booth.pm](https://booth.pm/ja/items/4898678) |
