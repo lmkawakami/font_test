@@ -56,3 +56,4 @@ font_test/
 | Chikara Yowaku | `851CHIKARA-YOWAKU_002.woff2` | [pm85122.onamae.jp](https://pm85122.onamae.jp/851ch-yw.html) |
 | Elmer Font A | `Elmer-Font-A.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/elmer-font-%e3%81%88%e3%82%8b%e3%81%be%e3%83%bc%e3%83%95%e3%82%a9%e3%83%b3%e3%83%88/) |
 | Elmer Font B | `Elmer-Font-B.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/elmer-font-%e3%81%88%e3%82%8b%e3%81%be%e3%83%bc%e3%83%95%e3%82%a9%e3%83%b3%e3%83%88/) |
+| Jiyucho | `Jiyucho.woff2` | [yokutobanaitori.web.fc2.com](https://yokutobanaitori.web.fc2.com/tegakifont.html#tegakifont3) |
