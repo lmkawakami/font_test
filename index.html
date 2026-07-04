@@ -93,6 +93,17 @@
                 background: #7c5cfc33;
             }
 
+            .preset-btn.active {
+                background: #2a2040;
+                border-color: #7c5cfc;
+                box-shadow: 0 0 0 2px #7c5cfc33;
+            }
+            .preset-btn-saved.active {
+                background: #1a2840;
+                border-color: #5caafc;
+                box-shadow: 0 0 0 2px #5caafc33;
+            }
+
             /* ── User-saved preset buttons ── */
             #user-preset-btns {
                 display: flex;
@@ -148,6 +159,15 @@
             #save-text-btn:hover {
                 border-color: #7c5cfc;
                 color: #c8b8ff;
+            }
+            #save-text-btn:disabled {
+                border-color: #2a2a3a;
+                color: #3a3a4a;
+                cursor: default;
+            }
+            #save-text-btn:disabled:hover {
+                border-color: #2a2a3a;
+                color: #3a3a4a;
             }
 
             /* ── Save dialog modal ── */
@@ -969,6 +989,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 btn.className = "preset-btn preset-btn-saved";
                 btn.textContent = label;
                 btn.title = text.length > 80 ? text.slice(0, 80) + "…" : text;
+                btn.dataset.text = text;
                 btn.addEventListener("click", () => {
                     inputText.value = text;
                     syncPreviews();
@@ -984,6 +1005,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     );
                     persistPresets(updated);
                     wrap.remove();
+                    syncPresetHighlight();
                 });
 
                 wrap.appendChild(btn);
@@ -1030,6 +1052,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 presets.push(preset);
                 persistPresets(presets);
                 addSavedPresetButton(preset);
+                syncPresetHighlight();
                 closeDialog();
             });
 
@@ -1040,6 +1063,39 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     .forEach((el) => {
                         el.textContent = inputText.value;
                     });
+            }
+
+            function syncPresetHighlight() {
+                const current = inputText.value;
+
+                // Built-in presets
+                document
+                    .querySelectorAll(".preset-btn[data-preset]")
+                    .forEach((btn) => {
+                        btn.classList.toggle(
+                            "active",
+                            PRESETS[btn.dataset.preset] === current,
+                        );
+                    });
+
+                // Saved presets
+                document
+                    .querySelectorAll(".preset-btn-saved")
+                    .forEach((btn) => {
+                        btn.classList.toggle(
+                            "active",
+                            btn.dataset.text === current,
+                        );
+                    });
+
+                // Disable save button if text already exists as a preset or is empty
+                const matchesAny =
+                    current.trim() === "" ||
+                    Object.values(PRESETS).includes(current) ||
+                    [...document.querySelectorAll(".preset-btn-saved")].some(
+                        (btn) => btn.dataset.text === current,
+                    );
+                saveTextBtn.disabled = matchesAny;
             }
 
             // ── Event listeners ───────────────────────────────────────────
@@ -1058,7 +1114,10 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 });
             });
 
-            inputText.addEventListener("input", syncPreviews);
+            inputText.addEventListener("input", () => {
+                syncPreviews();
+                syncPresetHighlight();
+            });
 
             globalSizeSlider.addEventListener("input", () => {
                 const val = globalSizeSlider.value;
@@ -1075,11 +1134,13 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 btn.addEventListener("click", () => {
                     inputText.value = PRESETS[btn.dataset.preset];
                     syncPreviews();
+                    syncPresetHighlight();
                 });
             });
 
             // ── Init ──────────────────────────────────────────────────────
             loadSavedPresets();
+            syncPresetHighlight();
             loadFonts();
         </script>
     </body>
