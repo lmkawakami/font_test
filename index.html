@@ -576,7 +576,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 <span id="global-size-display">48px</span>
             </div>
             <div class="save-text-row">
-                <button id="save-text-btn">💾 Salvar texto como preset</button>
+                <button id="save-text-btn">Salvar exemplo</button>
             </div>
         </div>
 
@@ -993,6 +993,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 btn.addEventListener("click", () => {
                     inputText.value = text;
                     syncPreviews();
+                    syncPresetHighlight();
                 });
 
                 const del = document.createElement("button");
