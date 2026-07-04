@@ -166,6 +166,33 @@
                 cursor: default;
             }
 
+            #add-all-btn {
+                background: transparent;
+                border: 1px solid #7c5cfc;
+                border-radius: 6px;
+                color: #c8b8ff;
+                padding: 0.45rem 1.1rem;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s;
+            }
+            #add-all-btn:hover {
+                background: #7c5cfc22;
+                border-color: #9070ff;
+            }
+            #add-all-btn:active {
+                background: #7c5cfc44;
+            }
+            #add-all-btn:disabled {
+                border-color: #3a3a52;
+                color: #555;
+                cursor: default;
+            }
+
             /* ── Font blocks grid ── */
             #font-blocks {
                 width: 100%;
@@ -395,6 +422,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             <div class="add-row">
                 <select id="font-select"></select>
                 <button id="add-font-btn">+ Adicionar</button>
+                <button id="add-all-btn">Testar todas</button>
             </div>
         </div>
 
@@ -502,6 +530,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const inputText = document.getElementById("input-text");
             const fontSelect = document.getElementById("font-select");
             const addFontBtn = document.getElementById("add-font-btn");
+            const addAllBtn = document.getElementById("add-all-btn");
             const blocksContainer = document.getElementById("font-blocks");
             const emptyState = document.getElementById("empty-state");
             const noFontsNotice = document.getElementById("no-fonts-notice");
@@ -549,6 +578,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 if (!FONTS.length) {
                     noFontsNotice.style.display = "block";
                     addFontBtn.disabled = true;
+                    addAllBtn.disabled = true;
                     return;
                 }
 
@@ -752,6 +782,17 @@ O rato roeu a roupa do rei de Roma.</textarea>
             // ── Event listeners ───────────────────────────────────────────
             addFontBtn.addEventListener("click", () => {
                 if (fontSelect.value) addFontBlock(fontSelect.value);
+            });
+
+            addAllBtn.addEventListener("click", () => {
+                const existing = new Set(
+                    [...blocksContainer.querySelectorAll(".font-block")].map(
+                        (b) => b.dataset.font,
+                    ),
+                );
+                FONTS.forEach(({ name }) => {
+                    if (!existing.has(name)) addFontBlock(name);
+                });
             });
 
             inputText.addEventListener("input", syncPreviews);
