@@ -63,3 +63,4 @@ font_test/
 | Chewy | `Chewy.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Chewy) |
 | Tekitou Poem | `TekitouPoem.woff2` | [booth.pm](https://booth.pm/ja/items/4806814) |
 | Sayonara | `sayonara.woff2` | [booth.pm](https://booth.pm/ja/items/1981731) |
+| Gisshiri | `Gisshiri.woff2` | [booth.pm](https://booth.pm/ja/items/4652044) |
