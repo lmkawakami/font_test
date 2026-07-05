@@ -64,3 +64,4 @@ font_test/
 | Tekitou Poem | `TekitouPoem.woff2` | [booth.pm](https://booth.pm/ja/items/4806814) |
 | Sayonara | `sayonara.woff2` | [booth.pm](https://booth.pm/ja/items/1981731) |
 | Gisshiri | `Gisshiri.woff2` | [booth.pm](https://booth.pm/ja/items/4652044) |
+| 19seg-Box | `19seg-Box.woff2` | [booth.pm](https://booth.pm/ja/items/178994) |
