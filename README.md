@@ -61,3 +61,4 @@ font_test/
 | Cherry Bomb One | `CherryBombOne.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Cherry+Bomb+One) |
 | Slackside One | `SlacksideOne.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Slackside+One) |
 | Chewy | `Chewy.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Chewy) |
+| Tekitou Poem | `TekitouPoem.woff2` | [booth.pm](https://booth.pm/ja/items/4806814) |
