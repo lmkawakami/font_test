@@ -60,3 +60,4 @@ font_test/
 | Sakurai Kouichi Font Felt Pen | `SakuraiKouichiFontFeltPen.woff2` | [freejapanesefont.com](https://www.freejapanesefont.com/sakurai-kouichi-font-felt-pen-download/) |
 | Cherry Bomb One | `CherryBombOne.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Cherry+Bomb+One) |
 | Slackside One | `SlacksideOne.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Slackside+One) |
+| Chewy | `Chewy.woff2` | [fonts.google.com](https://fonts.google.com/specimen/Chewy) |
