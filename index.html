@@ -935,6 +935,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
 
                 // Eagerly preload all fonts for SVG export
                 FONTS.forEach(({ name }) => getOrLoadFont(name));
+                syncSelectLabels();
             }
 
             // ── Build a comparison block ───────────────────────────────────
@@ -991,6 +992,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     const favs = getFavorites();
                     active ? favs.add(fontName) : favs.delete(fontName);
                     persistFavorites(favs);
+                    syncSelectLabels();
                 });
 
                 // — Save SVG button —
@@ -1152,6 +1154,14 @@ O rato roeu a roupa do rei de Roma.</textarea>
                     FAVORITES_KEY,
                     JSON.stringify([...favSet]),
                 );
+            }
+
+            function syncSelectLabels() {
+                const favs = getFavorites();
+                fontSelect.querySelectorAll("option").forEach((opt) => {
+                    opt.textContent =
+                        (favs.has(opt.value) ? "⭐ " : "") + opt.value;
+                });
             }
 
             function getSavedPresets() {
