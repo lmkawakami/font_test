@@ -171,7 +171,8 @@
             }
 
             /* ── Save dialog modal ── */
-            #save-dialog-overlay {
+            #save-dialog-overlay,
+            #del-dialog-overlay {
                 display: none;
                 position: fixed;
                 inset: 0;
@@ -181,7 +182,8 @@
                 z-index: 100;
             }
 
-            #save-dialog {
+            #save-dialog,
+            #del-dialog {
                 background: #1a1a2e;
                 border: 1px solid #3a3a52;
                 border-radius: 14px;
@@ -193,16 +195,23 @@
                 gap: 1rem;
             }
 
-            #save-dialog-title {
+            #save-dialog-title,
+            #del-dialog-title {
                 font-size: 1rem;
                 font-weight: 600;
                 color: #f0f0ff;
             }
 
-            #save-dialog-desc {
+            #save-dialog-desc,
+            #del-dialog-desc {
                 font-size: 0.85rem;
                 color: #888;
                 margin: 0;
+            }
+
+            #del-dialog-label {
+                color: #c8b8ff;
+                font-style: italic;
             }
 
             #save-dialog-input {
@@ -219,13 +228,15 @@
                 border-color: #7c5cfc;
             }
 
-            #save-dialog-actions {
+            #save-dialog-actions,
+            #del-dialog-actions {
                 display: flex;
                 gap: 0.6rem;
                 justify-content: flex-end;
             }
 
-            #save-dialog-cancel {
+            #save-dialog-cancel,
+            #del-dialog-cancel {
                 background: transparent;
                 border: 1px solid #3a3a52;
                 border-radius: 6px;
@@ -234,7 +245,8 @@
                 cursor: pointer;
                 transition: border-color 0.15s;
             }
-            #save-dialog-cancel:hover {
+            #save-dialog-cancel:hover,
+            #del-dialog-cancel:hover {
                 border-color: #666;
                 color: #aaa;
             }
@@ -251,6 +263,20 @@
             }
             #save-dialog-confirm:hover {
                 background: #9070ff;
+            }
+
+            #del-dialog-confirm {
+                background: #c0392b;
+                border: none;
+                border-radius: 6px;
+                color: #fff;
+                padding: 0.4rem 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.15s;
+            }
+            #del-dialog-confirm:hover {
+                background: #e74c3c;
             }
 
             #input-text {
@@ -729,6 +755,20 @@ O rato roeu a roupa do rei de Roma.</textarea>
             </div>
         </div>
 
+        <!-- Delete preset confirm dialog -->
+        <div id="del-dialog-overlay">
+            <div id="del-dialog">
+                <div id="del-dialog-title">Remover preset</div>
+                <p id="del-dialog-desc">
+                    Remover o preset <span id="del-dialog-label"></span>?
+                </p>
+                <div id="del-dialog-actions">
+                    <button id="del-dialog-cancel">Cancelar</button>
+                    <button id="del-dialog-confirm">Remover</button>
+                </div>
+            </div>
+        </div>
+
         <script>
             // ─────────────────────────────────────────────────────────────
             // FONT REGISTRY
@@ -878,7 +918,15 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const saveDialogConfirm = document.getElementById(
                 "save-dialog-confirm",
             );
+            const delDialogOverlay =
+                document.getElementById("del-dialog-overlay");
+            const delDialogLabel = document.getElementById("del-dialog-label");
+            const delDialogCancel =
+                document.getElementById("del-dialog-cancel");
+            const delDialogConfirm =
+                document.getElementById("del-dialog-confirm");
 
+            let pendingDeleteFn = null;
             let blockCounter = 0;
 
             // ── opentype.js cache — fontName → Promise<opentype.Font> ─────
@@ -1196,12 +1244,14 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 del.textContent = "×";
                 del.title = "Remover preset";
                 del.addEventListener("click", () => {
-                    const updated = getSavedPresets().filter(
-                        (p) => !(p.label === label && p.text === text),
-                    );
-                    persistPresets(updated);
-                    wrap.remove();
-                    syncPresetHighlight();
+                    openDelDialog(label, () => {
+                        const updated = getSavedPresets().filter(
+                            (p) => !(p.label === label && p.text === text),
+                        );
+                        persistPresets(updated);
+                        wrap.remove();
+                        syncPresetHighlight();
+                    });
                 });
 
                 wrap.appendChild(btn);
@@ -1212,6 +1262,37 @@ O rato roeu a roupa do rei de Roma.</textarea>
             function loadSavedPresets() {
                 getSavedPresets().forEach(addSavedPresetButton);
             }
+
+            // ── Delete preset confirm dialog logic ────────────────────────
+            function openDelDialog(label, deleteFn) {
+                delDialogLabel.textContent = "“" + label + "”";
+                pendingDeleteFn = deleteFn;
+                delDialogOverlay.style.display = "flex";
+            }
+
+            function closeDelDialog() {
+                delDialogOverlay.style.display = "none";
+                pendingDeleteFn = null;
+            }
+
+            delDialogCancel.addEventListener("click", closeDelDialog);
+
+            delDialogOverlay.addEventListener("click", (e) => {
+                if (e.target === delDialogOverlay) closeDelDialog();
+            });
+
+            delDialogConfirm.addEventListener("click", () => {
+                if (pendingDeleteFn) pendingDeleteFn();
+                closeDelDialog();
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (
+                    e.key === "Escape" &&
+                    delDialogOverlay.style.display === "flex"
+                )
+                    closeDelDialog();
+            });
 
             // ── Save dialog logic ─────────────────────────────────────────
             function openDialog() {
