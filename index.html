@@ -353,6 +353,35 @@
                 cursor: default;
             }
 
+            #add-fav-btn {
+                background: transparent;
+                border: 1px solid #f5c51888;
+                border-radius: 6px;
+                color: #f5c518cc;
+                padding: 0.45rem 1.1rem;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition:
+                    background 0.15s,
+                    border-color 0.15s,
+                    color 0.15s;
+            }
+            #add-fav-btn:hover {
+                background: #f5c51811;
+                border-color: #f5c518;
+                color: #f5c518;
+            }
+            #add-fav-btn:active {
+                background: #f5c51822;
+            }
+            #add-fav-btn:disabled {
+                border-color: #3a3a52;
+                color: #555;
+                cursor: default;
+            }
+
             #clear-blocks-btn {
                 background: transparent;
                 border: 1px solid #3a3a52;
@@ -666,6 +695,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 <select id="font-select"></select>
                 <button id="add-font-btn">+ Adicionar</button>
                 <button id="add-all-btn">Testar todas</button>
+                <button id="add-fav-btn">Testar favoritas</button>
                 <button id="clear-blocks-btn">Desfazer seleção</button>
             </div>
         </div>
@@ -823,6 +853,7 @@ O rato roeu a roupa do rei de Roma.</textarea>
             const fontSelect = document.getElementById("font-select");
             const addFontBtn = document.getElementById("add-font-btn");
             const addAllBtn = document.getElementById("add-all-btn");
+            const addFavBtn = document.getElementById("add-fav-btn");
             const clearBlocksBtn = document.getElementById("clear-blocks-btn");
             const blocksContainer = document.getElementById("font-blocks");
             const emptyState = document.getElementById("empty-state");
@@ -1266,6 +1297,19 @@ O rato roeu a roupa do rei de Roma.</textarea>
                 );
                 FONTS.forEach(({ name }) => {
                     if (!existing.has(name)) addFontBlock(name);
+                });
+            });
+
+            addFavBtn.addEventListener("click", () => {
+                const favs = getFavorites();
+                const existing = new Set(
+                    [...blocksContainer.querySelectorAll(".font-block")].map(
+                        (b) => b.dataset.font,
+                    ),
+                );
+                FONTS.forEach(({ name }) => {
+                    if (favs.has(name) && !existing.has(name))
+                        addFontBlock(name);
                 });
             });
 
